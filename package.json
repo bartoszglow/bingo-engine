@@ -1,6 +1,6 @@
 {
   "name": "@bglowacki/bingo-engine",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Isomorphic, dictionary-injected, multi-language Scrabble engine: validator, scorer, solver, board generator. Zero runtime deps, ESM+CJS, TypeScript.",
   "license": "MIT",
   "author": "Bartosz Głowacki <bartosz.glow@gmail.com>",
