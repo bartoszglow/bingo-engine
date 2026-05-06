@@ -1,0 +1,17 @@
+src/
+__tests__/
+docs/
+.github/
+.changeset/
+*.config.ts
+*.config.mts
+*.config.mjs
+tsconfig*.json
+.gitignore
+.nvmrc
+.eslintrc*
+eslint.config.*
+PLAN.md
+CONTRIBUTING.md
+coverage/
+.tsbuildinfo
