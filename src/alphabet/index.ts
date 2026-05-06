@@ -1,5 +1,15 @@
 /**
  * Subpath entry: `@bglowacki/bingo-engine/alphabet`
- * Implementation pending — see docs/PLAN.md step 1.
+ *
+ * Re-exports the public alphabet API: factory + helpers + bundled languages.
  */
-export {};
+export {
+  defineAlphabet,
+  isBlanked,
+  letterToTileId,
+  tileIdToLetter,
+  tileScore,
+  unblank,
+} from './alphabet.js';
+export { POLISH_ALPHABET } from './polish.js';
+export { ENGLISH_ALPHABET } from './english.js';

@@ -1,8 +1,64 @@
 /**
  * @bglowacki/bingo-engine — Isomorphic Scrabble engine.
  *
- * Public API will be filled in across implementation steps 1–8 from `docs/PLAN.md`.
- * For now this is an intentional placeholder so `tsup`, `tsc`, and `vitest` configs
- * have a valid entry point to chew on while we bootstrap the toolchain.
+ * Public API. See README and docs/PLAN.md for design rationale and roadmap.
  */
-export const __version__ = '0.0.1';
+
+// ---- Types ----
+export type {
+  Alphabet,
+  AlphabetSpec,
+  Bag,
+  BingoEngine,
+  Board,
+  BoardLayout,
+  Cell,
+  Dictionary,
+  Direction,
+  EngineConfig,
+  FormedWord,
+  GeneratedBoard,
+  GeneratedMove,
+  GeneratorOptions,
+  PlacedTile,
+  Placement,
+  PlacementTile,
+  PremiumKind,
+  PremiumSquare,
+  Rack,
+  RuleSet,
+  ScoreBreakdown,
+  SerializedBoard,
+  SolverOptions,
+  TileId,
+  TileSpec,
+  ValidationReason,
+  ValidationResult,
+} from './types.js';
+
+export { BLANK, BLANK_FLAG } from './types.js';
+
+// ---- Alphabet ----
+export {
+  defineAlphabet,
+  isBlanked,
+  letterToTileId,
+  tileIdToLetter,
+  tileScore,
+  unblank,
+} from './alphabet/alphabet.js';
+export { POLISH_ALPHABET } from './alphabet/polish.js';
+export { ENGLISH_ALPHABET } from './alphabet/english.js';
+
+// ---- Board layout ----
+export { SCRABBLE_LAYOUT_15X15, SIMPLE_LAYOUT_15X15 } from './board/layout.js';
+
+// ---- Rules ----
+export {
+  SCRABBLE_CLASSIC_RULES,
+  SCRABBLE_FREE_RULES,
+  SCRABBLE_NO_BINGO_RULES,
+} from './rules/presets.js';
+
+/** Library version (in sync with package.json). */
+export const VERSION = '0.0.1';
