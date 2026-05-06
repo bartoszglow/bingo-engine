@@ -50,8 +50,38 @@ export {
 export { POLISH_ALPHABET } from './alphabet/polish.js';
 export { ENGLISH_ALPHABET } from './alphabet/english.js';
 
-// ---- Board layout ----
+// ---- Board ----
 export { SCRABBLE_LAYOUT_15X15, SIMPLE_LAYOUT_15X15 } from './board/layout.js';
+export {
+  emptyBoard,
+  getCell,
+  hasNeighbour,
+  isEmpty,
+  placeTile,
+  withCell,
+  withCells,
+} from './board/board.js';
+export { inBounds, perpendicular, step } from './board/coords.js';
+
+// ---- Rack / Bag ----
+export {
+  bareTileId,
+  blankAs,
+  blankTile,
+  isPlacedBlank,
+  isRackBlank,
+  letterTile,
+  tile,
+  tileLetter,
+} from './rack/tile.js';
+export {
+  countTile,
+  drawTiles,
+  freshBag,
+  rackCanProvide,
+  removeFromRack,
+  returnTiles,
+} from './rack/rack.js';
 
 // ---- Rules ----
 export {
