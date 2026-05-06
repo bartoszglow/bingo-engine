@@ -10,11 +10,9 @@ import type {
   ScoreBreakdown,
 } from '../types.js';
 import { BLANK_FLAG } from '../types.js';
-import { tileIdToLetter, tileScore } from '../alphabet/alphabet.js';
-import { letterToTileId } from '../alphabet/alphabet.js';
+import { letterToTileId, tileIdToLetter, tileScore } from '../alphabet/alphabet.js';
 import { extractFormedWords } from '../validator/crosswords.js';
 import { withCells } from '../board/board.js';
-import { inBounds } from '../board/coords.js';
 import { buildPremiumLookup, letterMultiplier, wordMultiplier } from './premiums.js';
 
 /** Context the scorer needs. Subset of `EngineConfig` minus `dictionary`/`random`. */
@@ -48,31 +46,22 @@ export function scorePlacement(
 
   // Replicate the validator's filler-tile handling: walk the placement axis,
   // emitting either a "new" tile (for empty cells) or a "filler" hit (for
-  // existing same-letter cells). We need the new-cell coordinates for both
-  // the would-be board and the per-tile scoring.
+  // existing same-letter cells). The contract is that the placement is
+  // structurally valid (call `validatePlacement` first) — so coordinates
+  // stay in-bounds and every letter is in the alphabet.
   const newCells: { row: number; col: number; placedTile: PlacedTile }[] = [];
   let row = placement.startRow;
   let col = placement.startCol;
-  let tileIdx = 0;
 
-  while (tileIdx < placement.tiles.length) {
-    if (!inBounds(row, col, layout.size)) break;
-    const intended = placement.tiles[tileIdx]!;
-    const intendedId = letterToTileId(alphabet, intended.letter);
-    if (intendedId === undefined) break;
-
+  for (const intended of placement.tiles) {
+    const intendedId = letterToTileId(alphabet, intended.letter)!;
     const cell: Cell = (board[row] as Cell[])[col] ?? null;
-    if (cell !== null) {
-      // Filler tile — does not get scored as new.
-      tileIdx += 1;
-    } else {
+    if (cell === null) {
       const placedTile: PlacedTile = {
         tileId: intended.isBlank ? intendedId | BLANK_FLAG : intendedId,
       };
       newCells.push({ row, col, placedTile });
-      tileIdx += 1;
     }
-
     if (placement.direction === 'horizontal') col += 1;
     else row += 1;
   }
