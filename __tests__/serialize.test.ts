@@ -60,4 +60,23 @@ describe('serialize/deserialize board', () => {
     const restored = deserializeBoard(parsed, layout);
     expect(restored[7]![7]).toEqual(k);
   });
+
+  it('rejects malicious or malformed payloads', () => {
+    // Negative size
+    expect(() => deserializeBoard({ size: -1, cells: [] })).toThrow(/Invalid serialized board size/);
+    // Non-integer size
+    expect(() => deserializeBoard({ size: 1.5, cells: [] })).toThrow(/Invalid serialized board size/);
+    // Absurdly large size (DoS guard)
+    expect(() => deserializeBoard({ size: 10_000, cells: [] })).toThrow(/Invalid serialized board size/);
+    // cells array length mismatch
+    expect(() => deserializeBoard({ size: 3, cells: [null, null] })).toThrow(/Invalid serialized cells/);
+    // Negative tileId
+    expect(() =>
+      deserializeBoard({ size: 1, cells: [{ tileId: -5 }] }),
+    ).toThrow(/Invalid tileId/);
+    // Non-integer tileId
+    expect(() =>
+      deserializeBoard({ size: 1, cells: [{ tileId: 1.5 }] }),
+    ).toThrow(/Invalid tileId/);
+  });
 });

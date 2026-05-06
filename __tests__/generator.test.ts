@@ -90,23 +90,10 @@ describe('generator', () => {
   });
 });
 
-describe('generator — produced boards parse + score', () => {
-  it('after generation, the board can be queried via the solver again', () => {
+describe('generator — produced boards are usable', () => {
+  it('after generation, the board has the configured size and the bag has shrunk', () => {
     const result = generateBoard(baseCtx(99), { moves: 3 });
     expect(result.board.length).toBe(layout.size);
-    // bag size == 100 - rackSize - tilesPlaced
-    const tilesPlaced = result.movesPlayed.reduce(
-      (n, m) => n + m.placement.tiles.filter(() => !boardHadIt()).length,
-      0,
-    );
-    void tilesPlaced;
     expect(result.bag.length).toBeLessThan(100);
   });
 });
-
-function boardHadIt(): boolean {
-  // Helper placeholder for clarity in the count above; we can't easily
-  // distinguish new vs filler from the move log alone, so the test just
-  // bounds bag size rather than counting exactly.
-  return false;
-}

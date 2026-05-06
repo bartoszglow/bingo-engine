@@ -11,7 +11,7 @@ import type {
   ValidationResult,
 } from '../types.js';
 import { BLANK_FLAG } from '../types.js';
-import { letterToTileId } from '../alphabet/alphabet.js';
+import { letterToTileId, unblank } from '../alphabet/alphabet.js';
 import { hasNeighbour, isEmpty, withCells } from '../board/board.js';
 import { inBounds } from '../board/coords.js';
 import { rackCanProvide } from '../rack/rack.js';
@@ -87,7 +87,7 @@ export function validatePlacement(
     if (cell !== null) {
       // Existing tile at this cell. It must match the intended letter
       // (ignoring the blank flag) — otherwise the placement collides.
-      const cellLetterId = cell.tileId & 0x7f;
+      const cellLetterId = unblank(cell.tileId);
       if (cellLetterId !== intendedId) {
         return { valid: false, reason: 'overlaps-existing-different-letter' };
       }

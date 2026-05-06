@@ -16,9 +16,6 @@ import { scorePlacement } from './scorer/scorer.js';
 import { findAllPlacements } from './solver/solver.js';
 import { generateBoard } from './generator/generator.js';
 import { applyPlacement } from './placement/apply.js';
-import { extractFormedWords } from './validator/crosswords.js';
-import { computeNewCells } from './placement/apply.js';
-import { tileIdToLetter } from './alphabet/alphabet.js';
 import { deserializeBoard, serializeBoard } from './serialize/board.js';
 
 /**
@@ -48,34 +45,8 @@ export function createBingoEngine(config: EngineConfig): BingoEngine {
     generateBoard: (opts?: GeneratorOptions) =>
       generateBoard({ ...config, random }, opts),
 
-    placementsToWords: (board: Board, placement: Placement) => {
-      const newCells = computeNewCells(board, placement, config.alphabet);
-      const newBoard = applyPlacement(board, placement, config.alphabet);
-      const { mainWord, crosswords } = extractFormedWords(
-        newBoard,
-        placement.direction,
-        newCells.map((c) => ({ row: c.row, col: c.col })),
-        config.alphabet,
-      );
-      const newSet = new Set<number>();
-      for (const c of newCells) newSet.add(c.row * config.layout.size + c.col);
-      const words = [];
-      const all = mainWord ? [mainWord, ...crosswords] : crosswords;
-      for (const w of all) {
-        words.push({
-          word: w.word,
-          score: 0, // computed elsewhere via scorePlacement
-          cells: w.cells.map((cc) => ({
-            row: cc.row,
-            col: cc.col,
-            letter: tileIdToLetter(config.alphabet, cc.tileId),
-            fromRack: newSet.has(cc.row * config.layout.size + cc.col),
-            isBlank: (cc.tileId & 0x80) !== 0,
-          })),
-        });
-      }
-      return words;
-    },
+    placementsToWords: (board: Board, placement: Placement) =>
+      scorePlacement(board, placement, config).words,
 
     serializeBoard: (board: Board) => serializeBoard(board),
     deserializeBoard: (data: SerializedBoard) => deserializeBoard(data, config.layout),

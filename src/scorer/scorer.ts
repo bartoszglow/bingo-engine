@@ -10,7 +10,7 @@ import type {
   ScoreBreakdown,
 } from '../types.js';
 import { BLANK_FLAG } from '../types.js';
-import { letterToTileId, tileIdToLetter, tileScore } from '../alphabet/alphabet.js';
+import { isBlanked, letterToTileId, tileIdToLetter, tileScore } from '../alphabet/alphabet.js';
 import { extractFormedWords } from '../validator/crosswords.js';
 import { withCells } from '../board/board.js';
 import { buildPremiumLookup, letterMultiplier, wordMultiplier } from './premiums.js';
@@ -132,7 +132,7 @@ function scoreWord(
       col: cell.col,
       letter: tileIdToLetter(alphabet, cell.tileId),
       fromRack: isNew,
-      isBlank: (cell.tileId & 0x80) !== 0,
+      isBlank: isBlanked(cell.tileId),
     });
   }
 
