@@ -9,10 +9,22 @@
   "engines": { "node": ">=20" },
   "files": ["dist", "README.md", "LICENSE", "CHANGELOG.md"],
   "exports": {
-    ".":            { "types": "./dist/index.d.ts",           "import": "./dist/index.js",           "require": "./dist/index.cjs" },
-    "./alphabet":   { "types": "./dist/alphabet/index.d.ts",  "import": "./dist/alphabet/index.js",  "require": "./dist/alphabet/index.cjs" },
-    "./solver":     { "types": "./dist/solver/index.d.ts",    "import": "./dist/solver/index.js",    "require": "./dist/solver/index.cjs" },
-    "./generator":  { "types": "./dist/generator/index.d.ts", "import": "./dist/generator/index.js", "require": "./dist/generator/index.cjs" },
+    ".": {
+      "import":  { "types": "./dist/index.d.ts",  "default": "./dist/index.js" },
+      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
+    },
+    "./alphabet": {
+      "import":  { "types": "./dist/alphabet/index.d.ts",  "default": "./dist/alphabet/index.js" },
+      "require": { "types": "./dist/alphabet/index.d.cts", "default": "./dist/alphabet/index.cjs" }
+    },
+    "./solver": {
+      "import":  { "types": "./dist/solver/index.d.ts",  "default": "./dist/solver/index.js" },
+      "require": { "types": "./dist/solver/index.d.cts", "default": "./dist/solver/index.cjs" }
+    },
+    "./generator": {
+      "import":  { "types": "./dist/generator/index.d.ts",  "default": "./dist/generator/index.js" },
+      "require": { "types": "./dist/generator/index.d.cts", "default": "./dist/generator/index.cjs" }
+    },
     "./package.json": "./package.json"
   },
   "main": "./dist/index.cjs",
@@ -26,7 +38,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint .",
-    "lint:pkg": "publint && attw --pack .",
+    "lint:pkg": "publint && attw --pack . --profile node16",
     "format": "prettier --write .",
     "prepublishOnly": "npm run typecheck && npm run lint && npm run test && npm run build && npm run lint:pkg",
     "release": "changeset publish",

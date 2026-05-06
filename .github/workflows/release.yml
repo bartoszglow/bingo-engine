@@ -1,8 +1,10 @@
 name: Release
 
+# Manual-only trigger until NPM_TOKEN is provisioned and a stable v0.1.0 ships.
+# After that, switch this to `on: push: branches: [main]` so changesets/action
+# can open release PRs and publish on merge.
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
