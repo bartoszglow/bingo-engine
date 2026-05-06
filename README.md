@@ -111,7 +111,8 @@ const ITALIAN = defineAlphabet({
 
 ## Documentation
 
-- **[docs/USAGE.md](./docs/USAGE.md)** — full usage guide with examples for every API: alphabets, dictionaries, rules, placements, scoring, board generation, solver, Web Worker integration, serialization.
+- **[docs/API.md](./docs/API.md)** — complete API reference: every exported function, type, constant, and pre-built config with signatures, parameter tables, return types, and per-method examples.
+- **[docs/USAGE.md](./docs/USAGE.md)** — tutorial-style usage guide: getting started, custom alphabets, custom dictionaries, custom rules, Web Worker integration, serialization, common patterns.
 - **[docs/PLAN.md](./docs/PLAN.md)** — design plan: comparative analysis vs. Quackle / Macondo / wolges / scrabble-solver, algorithms (Appel-Jacobson with cross-checks), TDD strategy, project roadmap.
 - **[CHANGELOG.md](./CHANGELOG.md)** — release history.
 - **[CONTRIBUTING.md](./CONTRIBUTING.md)** — development setup and conventions.
