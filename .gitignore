@@ -8,3 +8,6 @@ coverage/
 .tsbuildinfo
 .vscode/
 .idea/
+
+# Local-only AI session notes (Bartosz preference: never commit)
+CLAUDE.md
