@@ -1,7 +1,8 @@
 # Usage guide
 
-> This is the technical reference for `@bglowacki/bingo-engine`. For project
-> background and design rationale, see [PLAN.md](./PLAN.md).
+> Tutorial-style guide. For an exhaustive function-by-function reference,
+> see [API.md](./API.md). For project background and design rationale, see
+> [PLAN.md](./PLAN.md).
 
 ## Table of contents
 

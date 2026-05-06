@@ -114,4 +114,4 @@ export { deserializeBoard, serializeBoard } from './serialize/board.js';
 export { createBingoEngine } from './engine.js';
 
 /** Library version (in sync with package.json). */
-export const VERSION = '0.0.1';
+export const VERSION = '0.1.0';
