@@ -1,34 +1,49 @@
 name: Release
 
-# Manual-only trigger until NPM_TOKEN is provisioned and a stable v0.1.0 ships.
-# After that, switch this to `on: push: branches: [main]` so changesets/action
-# can open release PRs and publish on merge.
+# Manually triggered: bump package.json version + tag, merge to main,
+# then run this workflow from the Actions tab. After v0.1.0 we'll switch
+# to a Changesets-driven flow that opens version PRs automatically.
 on:
   workflow_dispatch:
 
 permissions:
   contents: write
   id-token: write
-  pull-requests: write
 
 jobs:
-  release:
-    name: changesets-publish
+  publish:
+    name: npm publish
     runs-on: ubuntu-latest
+    environment: npm-publish
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test:coverage
       - run: npm run build
-      - uses: changesets/action@v1
-        with:
-          publish: npm run release
-          version: npm run version
+      - run: npm run lint:pkg
+      - name: Publish to npm with provenance
+        run: npm publish --access public --provenance
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Read version from package.json
+        id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Tag the release
+        run: |
+          git tag "v${{ steps.version.outputs.version }}"
+          git push origin "v${{ steps.version.outputs.version }}"
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          body: |
+            See [CHANGELOG.md](./CHANGELOG.md#${{ steps.version.outputs.version }}-2026-05-06).
+          generate_release_notes: false
