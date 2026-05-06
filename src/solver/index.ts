@@ -1,5 +1,7 @@
 /**
  * Subpath entry: `@bglowacki/bingo-engine/solver`
- * Implementation pending — see docs/PLAN.md step 6.
  */
-export {};
+export { findAllPlacements } from './solver.js';
+export type { SolverContext } from './solver.js';
+export { findAnchors } from './anchors.js';
+export type { Anchor } from './anchors.js';

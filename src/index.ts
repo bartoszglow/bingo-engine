@@ -96,11 +96,22 @@ export { buildSetDictionary, buildTrieDictionary } from './dictionary/index.js';
 // ---- Random ----
 export { seededRng } from './random/seeded.js';
 
-// ---- Validator + Scorer (standalone callable; will be re-bound by createBingoEngine) ----
+// ---- Validator + Scorer + Solver + Generator (standalone callable) ----
 export { validatePlacement } from './validator/validator.js';
 export type { ValidatorContext } from './validator/validator.js';
 export { scorePlacement } from './scorer/scorer.js';
 export type { ScorerContext } from './scorer/scorer.js';
+export { findAllPlacements, findAnchors } from './solver/index.js';
+export type { Anchor, SolverContext } from './solver/index.js';
+export { generateBoard } from './generator/index.js';
+export type { GeneratorContext } from './generator/index.js';
+
+// ---- Placement application + serialization ----
+export { applyPlacement, computeNewCells } from './placement/apply.js';
+export { deserializeBoard, serializeBoard } from './serialize/board.js';
+
+// ---- Engine factory (binds a config to all operations) ----
+export { createBingoEngine } from './engine.js';
 
 /** Library version (in sync with package.json). */
 export const VERSION = '0.0.1';

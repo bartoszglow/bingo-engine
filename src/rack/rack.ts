@@ -1,5 +1,6 @@
 import type { Alphabet, Bag, PlacedTile, Rack, TileId } from '../types.js';
 import { BLANK } from '../types.js';
+import { isBlanked, unblank } from '../alphabet/alphabet.js';
 
 /**
  * Build a fresh bag containing every tile in the alphabet's distribution.
@@ -64,8 +65,8 @@ export function removeFromRack(
   for (const w of wanted) {
     // A played-blank-as-letter (high bit set) consumes a rack blank (id 0).
     // A plain letter consumes either an exact id match or a rack blank.
-    const wantedBare = w.tileId & 0x7f;
-    const isPlayedBlank = (w.tileId & 0x80) !== 0;
+    const wantedBare = unblank(w.tileId);
+    const isPlayedBlank = isBlanked(w.tileId);
 
     let foundIdx = -1;
     if (!isPlayedBlank) {
@@ -102,8 +103,8 @@ export function rackCanProvide(rack: Rack, wanted: readonly PlacedTile[]): boole
 
 /** Count tiles of a given id in the rack (ignoring the blank flag). */
 export function countTile(rack: Rack, tileId: TileId): number {
-  const bare = tileId & 0x7f;
+  const bare = unblank(tileId);
   let n = 0;
-  for (const t of rack) if ((t.tileId & 0x7f) === bare) n++;
+  for (const t of rack) if (unblank(t.tileId) === bare) n++;
   return n;
 }
