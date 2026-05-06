@@ -90,5 +90,11 @@ export {
   SCRABBLE_NO_BINGO_RULES,
 } from './rules/presets.js';
 
+// ---- Dictionary ----
+export { buildSetDictionary, buildTrieDictionary } from './dictionary/index.js';
+
+// ---- Random ----
+export { seededRng } from './random/seeded.js';
+
 /** Library version (in sync with package.json). */
 export const VERSION = '0.0.1';
