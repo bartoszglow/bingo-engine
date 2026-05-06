@@ -96,5 +96,11 @@ export { buildSetDictionary, buildTrieDictionary } from './dictionary/index.js';
 // ---- Random ----
 export { seededRng } from './random/seeded.js';
 
+// ---- Validator + Scorer (standalone callable; will be re-bound by createBingoEngine) ----
+export { validatePlacement } from './validator/validator.js';
+export type { ValidatorContext } from './validator/validator.js';
+export { scorePlacement } from './scorer/scorer.js';
+export type { ScorerContext } from './scorer/scorer.js';
+
 /** Library version (in sync with package.json). */
 export const VERSION = '0.0.1';
