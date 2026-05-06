@@ -109,9 +109,12 @@ const ITALIAN = defineAlphabet({
 - **Dual ESM + CJS** with full TypeScript types. Subpath exports for `./alphabet`, `./solver`, `./generator`.
 - **Stateless engine instances.** All operations take the current state and return new state — easy to use in Web Workers, Redux reducers, or server-side actor systems.
 
-## API reference
+## Documentation
 
-See [docs/](./docs) for the full API documentation, design rationale, comparative analysis (vs. Quackle / Macondo / wolges / scrabble-solver), and the test-driven development plan.
+- **[docs/USAGE.md](./docs/USAGE.md)** — full usage guide with examples for every API: alphabets, dictionaries, rules, placements, scoring, board generation, solver, Web Worker integration, serialization.
+- **[docs/PLAN.md](./docs/PLAN.md)** — design plan: comparative analysis vs. Quackle / Macondo / wolges / scrabble-solver, algorithms (Appel-Jacobson with cross-checks), TDD strategy, project roadmap.
+- **[CHANGELOG.md](./CHANGELOG.md)** — release history.
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** — development setup and conventions.
 
 ## Status
 
