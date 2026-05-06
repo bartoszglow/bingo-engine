@@ -42,10 +42,7 @@ import { createBingoEngine, POLISH_ALPHABET } from '@bglowacki/bingo-engine';
 const { createBingoEngine, POLISH_ALPHABET } = require('@bglowacki/bingo-engine');
 ```
 
-> 🛈 `createBingoEngine` becomes available in step 8 of the implementation
-> roadmap. The current pre-release exposes the building blocks: alphabets,
-> board layouts, rule presets, board ops, and rack/bag helpers. Each example
-> below is annotated with the version that introduces the API it uses.
+> Every API below is implemented and covered by tests. The package is pre-1.0 and may still see minor API adjustments before `1.0.0`.
 
 ---
 
