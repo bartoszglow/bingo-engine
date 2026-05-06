@@ -978,6 +978,53 @@ Po pierwszym publishu: kolejne wydania przez Changesets (PR z `.changeset/*.md` 
 
 ---
 
+## Branch protection / required CI on PRs (TODO — pending GitHub plan decision)
+
+**Wymaganie**: każdy PR do `main` musi mieć zielony job `lint + typecheck + test + build` przed mergem.
+
+**Status**: ❌ NIE WŁĄCZONE. GitHub Free nie udostępnia ani classic Branch Protection (`PUT /repos/{o}/{r}/branches/main/protection` → 403) ani Repository Rulesets (`POST /repos/{o}/{r}/rulesets` → 403) dla **prywatnych** repozytoriów. Próba zwraca: _"Upgrade to GitHub Pro or make this repository public to enable this feature."_
+
+**Co już działa bez protection**:
+
+- CI workflow (`.github/workflows/ci.yml`) odpala się na każdy push do `main` ORAZ na każdy `pull_request` do `main`. Status check pokazuje się w UI PR-a (`lint + typecheck + test + build`).
+- Czerwony check **wizualnie sygnalizuje** że PR nie jest mergeable, ale GitHub nie blokuje merge'a — admin może mergeować mimo czerwonego.
+
+**Opcje rozwiązania** (wymaga decyzji użytkownika):
+
+1. **Repo publiczne** — `gh repo edit bartoszglow/bingo-engine --visibility public`. Branch protection działa od razu, free, wszystkie features dostępne. Cena: kod widoczny dla świata. Pasuje, jeśli i tak zamierzamy publish na npm + open-source.
+2. **GitHub Pro** ($4/mies za usera) — zostaje prywatne, branch protection działa.
+3. **GitHub Team** ($4/mies/usera w organizacji) — jeśli planujemy multi-user repo.
+
+**Po włączeniu** — apliko wać następujący ruleset (gotowy w `/tmp/ruleset.json`, do dorzucenia jako `.github/rulesets/main-requires-ci.json` przy publishu):
+
+```json
+{
+  "name": "main-requires-ci",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": { "ref_name": { "include": ["refs/heads/main"], "exclude": [] } },
+  "rules": [
+    { "type": "deletion" },
+    { "type": "non_fast_forward" },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "required_status_checks": [{ "context": "lint + typecheck + test + build" }]
+      }
+    }
+  ]
+}
+```
+
+Apply: `gh api -X POST /repos/bartoszglow/bingo-engine/rulesets --input .github/rulesets/main-requires-ci.json`.
+
+Alternatywnie classic Branch Protection (`PUT /repos/{o}/{r}/branches/main/protection`) z `required_status_checks.strict=true` + `enforce_admins=false` + brak required reviews. To samo działa.
+
+**Decyzja czeka**: public vs Pro. Jeśli planujemy v0.1.0 publishować na npm jako MIT (wg planu — tak), to repo i tak musi być widoczne dla npm provenance via GitHub OIDC. Najpragmatyczniej: **przełączyć na public przed publishem**, wtedy branch protection włącza się darmowo.
+
+---
+
 ## Out of scope (świadomie odłożone)
 
 - **Integracja z `GameModule`** w aplikacji Bingo — oddzielny plan po dostarczeniu silnika.
